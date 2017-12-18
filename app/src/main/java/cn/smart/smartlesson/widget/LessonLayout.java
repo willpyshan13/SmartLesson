@@ -3,7 +3,11 @@ package cn.smart.smartlesson.widget;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
+
+import cn.smart.smartlesson.R;
 
 /**
  * @desc: TODO
@@ -11,8 +15,12 @@ import android.widget.LinearLayout;
  * @createdTime: 2017/12/14 16:45
  */
 public class LessonLayout extends LinearLayout {
+    View view;
     public LessonLayout(Context context) {
         super(context);
+        view = LayoutInflater.from(context).inflate(R.layout.activity_lesson,null);
+
+        addView(view);
     }
 
     public LessonLayout(Context context, @Nullable AttributeSet attrs) {
@@ -23,7 +31,4 @@ public class LessonLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public LessonLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
 }

@@ -4,16 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cn.smart.smartlesson.MainActivity">
-    <ImageView
-        android:id="@+id/home_bg"
-        android:background="@drawable/lesson_bitmap"
+    <HorizontalScrollView
+        android:id="@+id/main_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/home_recycle"
-        android:layout_width="match_parent"
-        android:paddingLeft="240dp"
-        android:paddingRight="240dp"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/main_scroll_linear"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="match_parent"></LinearLayout>
+    </HorizontalScrollView>
 </RelativeLayout>
