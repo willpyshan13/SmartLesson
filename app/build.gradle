@@ -28,4 +28,5 @@ dependencies {
     implementation 'com.android.support.test:runner:1.0.2-alpha1'
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'com.google.code.gson:gson:2.7'
+    implementation project(':baselibrary')
 }

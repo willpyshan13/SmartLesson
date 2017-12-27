@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LessonActivity"></activity>
+        <activity android:name=".VideoPlayActivity"></activity>
     </application>
 
 </manifest>
