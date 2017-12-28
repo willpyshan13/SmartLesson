@@ -1,77 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/ke_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <SurfaceView
-        android:id="@+id/sv_video_play"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_margin="@dimen/video_margin"
-        android:layout_height="wrap_content"
-        android:src="@drawable/kt_back" />
+    android:layout_height="match_parent"
+    android:background="@drawable/ke_background">
+
+
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:src="@drawable/kt_bt" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/video_recycle"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/video_margin_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/tv_title"
         android:layout_centerHorizontal="true"
-        android:text="机灵宝宝乐园"
-        android:layout_marginTop="@dimen/play_margin_top"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:src="@drawable/kt_bt" />
+
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/lesson_play_margin"
+            android:background="@drawable/kt_play_bg" />
+
+        <RelativeLayout
+            android:id="@+id/video_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lesson_play_video_small_height"
+            android:layout_marginLeft="@dimen/lesson_play_video_margin_left"
+            android:layout_marginTop="@dimen/lesson_play_video_margin_top"
+            android:layout_marginRight="@dimen/lesson_play_video_margin_right"
+            android:layout_toLeftOf="@+id/video_recycle">
+
+            <cn.smart.smartlesson.widget.CircleSurfaceView
+                android:id="@+id/sv_video_play"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/kt_play_big" />
+
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/video_recycle"
+            android:layout_marginTop="@dimen/lesson_play_video_margin_top"
+            android:layout_marginRight="@dimen/lesson_play_video_margin_left"
+            android:layout_width="@dimen/lesson_play_video_right_width"
+            android:layout_height="@dimen/lesson_play_video_small_list_height"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/kt_play_video_bg" />
+
+    </RelativeLayout>
+
     <LinearLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/video_control"
-        android:layout_margin="@dimen/play_control_margin"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/play_control_margin"
+        android:gravity="center">
+
         <ImageView
             android:id="@+id/iv_pause"
-            android:src="@drawable/kt_play_little"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/kt_play_little" />
+
         <ImageView
             android:id="@+id/iv_next"
-            android:src="@drawable/kt_xyj"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/kt_xyj" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="00:00"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white" />
         <SeekBar
             android:id="@+id/video_progress"
-            android:layout_weight="15"
-            android:progressDrawable="@drawable/bg_play_progress"
-            android:thumb="@drawable/bfq_jdt_dqwz"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:maxHeight="@dimen/lesson_play_seek_height"
+            android:progressDrawable="@drawable/bg_play_progress"
+            android:thumb="@drawable/bfq_jdt_dqwz" />
+
         <TextView
             android:id="@+id/tv_time"
-            android:layout_width="240dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@android:color/white"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_height="wrap_content" />
+            android:textColor="@android:color/white" />
+
         <ImageView
-            android:layout_weight="1"
-            android:src="@drawable/kt_qp"
+            android:id="@+id/iv_min"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/kt_qp" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/video_margin"
+        android:src="@drawable/kt_back" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/play_margin_top"
+        android:text="机灵宝宝乐园"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <TextView
+        android:id="@+id/tv_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/lesson_play_complete_margin_bottom"
+        android:text="已经有9位小朋友学完该课程"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 </RelativeLayout>
