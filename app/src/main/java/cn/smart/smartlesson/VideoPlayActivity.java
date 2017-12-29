@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +28,17 @@ import java.util.List;
 
 import cn.smart.baselibrary.utils.SharePreferenceUtils;
 import cn.smart.baselibrary.view.BaseActivity;
+import cn.smart.smartlesson.bean.LearnDetailfBeans;
+import cn.smart.smartlesson.bean.LearnInfoBean;
 import cn.smart.smartlesson.bean.VideoBeans;
+import cn.smart.smartlesson.utils.Constants;
+import cn.smart.smartlesson.utils.RetrofitUtils;
 import cn.smart.smartlesson.widget.CircleSurfaceView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -41,16 +52,7 @@ import static android.view.View.OnTouchListener;
  */
 public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Callback, MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "VideoPlayActivity";
-    public static final String VIDEO_PLAY_LIST_EXTRA = "video_play_list";
-    public static final String VIDEO_PLAY_POSITION_EXTRA = "video_play_position";
-    public static final String VIDEO_PLAY_POSITION_TYPE = "video_type";
-    public static final String VIDEO_PLAY_FROM = "video_play_from";
-    public static final String VIDEO_PLAY_FROM_LAUNCHER = "video_play_from_launcher";
-    public static final String VIDEO_PLAY_FROM_VOICE = "video_play_from_voice";
-    public static final String VIDEO_PLAY_TYPE = "video_play_type";
-    public static final String VIDEO_PLAY_TYPE_VIDEO = "movie";
-    public static final String VIDEO_PLAY_TYPE_MUSIC = "music";
-    public static final String VIDEO_PLAY_TYPE_STORY = "story";
+    private LearnInfoBean.DataBean.ContentBean mLearnInfo;
     private String mPlayType = "";
     MediaPlayer mediaPlayer;
     CircleSurfaceView mSurfaceView;
@@ -64,14 +66,15 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     private int HANDLER_MESSAGE_GET_PROGRESS = 1;
     private int HANDLER_MESSAGE_DISMISS_CONTROL = 2;
     private int HANDLER_MESSAGE_PLAYVIDEO = 3;
+    private static final int MESSAGE_WHAT_NOTIFY_CHANGE = 4;
     private long GET_PROGRESS_TIME = 1 * 1000;
     private long DISMISS_CONTROL_TIME = 5 * 1000;
     private int mVideoSize = 0;
     private BitmapFactory.Options options;
-    private boolean mIsMusic = false;
-    private boolean mIsFromVoice = false;
+    private OkHttpClient okHttpClient;
+    private Request mRequest;
     private LinearLayout mLlBottomControl;
-    private List<VideoBeans> mVideoBeans = new ArrayList<>();
+    LearnDetailfBeans mLearnDetail;
     RelativeLayout.LayoutParams mPreParams;
     private Handler mHandler = new Handler() {
         @Override
@@ -86,6 +89,11 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                 setVisbility(INVISIBLE);
             }else if(msg.what == HANDLER_MESSAGE_PLAYVIDEO){
                 playVideoWIthUrl("http://videos.smart-dog.cn/good%20night.mp4");
+            }else if(msg.what == MESSAGE_WHAT_NOTIFY_CHANGE){
+                if (mLearnDetail.getData()!=null&&mLearnDetail.getData().size()>0) {
+                    playVideoWIthUrl(mLearnDetail.getData().get(0).getPath());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         }
     };
@@ -152,14 +160,8 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     protected void initView() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(this);
-        currentPosition = getIntent().getIntExtra(VIDEO_PLAY_POSITION_EXTRA, 0);
-        mIsMusic = getIntent().getBooleanExtra(VIDEO_PLAY_POSITION_TYPE, false);
+
         mVideoLayout = findView(R.id.video_layout);
-        mPlayType = getIntent().getStringExtra(VIDEO_PLAY_TYPE);
-        mIsFromVoice = getIntent().getBooleanExtra(VIDEO_PLAY_FROM, false);
-        if (mIsFromVoice) {
-            currentPosition = SharePreferenceUtils.getCurrentIndex(this, mPlayType);
-        }
         mLlBottomControl = findView(R.id.video_control);
         mSurfaceView = findView(R.id.sv_video_play);
         mTvComplete = findView(R.id.tv_complete);
@@ -173,14 +175,12 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         mTime = findView(R.id.tv_time);
         mSeekbar.setOnSeekBarChangeListener(this);
         mSurfaceView.getHolder().addCallback(this);
-
         hideSystemUiVisible(mSurfaceView);
         options = new BitmapFactory.Options();
         mAdapter = new GalleryAdapter();
         mVideoList = findView(R.id.video_recycle);
         mVideoList.setLayoutManager(new GridLayoutManager(this, 1));
         mVideoList.setAdapter(mAdapter);
-        requestDataSource();
         mVideoList.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -196,8 +196,10 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             }
         });
 
-        mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_PLAYVIDEO,5*1000);
-
+        mLearnInfo = (LearnInfoBean.DataBean.ContentBean) getIntent().getSerializableExtra(Constants.ID);
+        mTvTitle.setText(mLearnInfo.getName());
+        mTvComplete.setVisibility(View.GONE);
+        requestDataSource(mLearnInfo.getId());
     }
 
     public void setMaxVideo(){
@@ -239,7 +241,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
     public void playNext() {
         currentPosition++;
-        if (currentPosition == mVideoBeans.size()) {
+        if (currentPosition == mLearnDetail.getData().size()) {
             currentPosition = 0;
         }
         pauseVideo();
@@ -252,10 +254,10 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             if (mediaPlayer.isPlaying()) {
                 SharePreferenceUtils.setCurrentProgress(this,mediaPlayer.getCurrentPosition(),mPlayType);
                 mediaPlayer.pause();
-//                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_1);
+                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_1);
             } else {
                 mediaPlayer.start();
-//                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_2);
+                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_2);
             }
         }
     }
@@ -263,7 +265,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     public void playPre() {
         currentPosition--;
         if (currentPosition == -1) {
-            currentPosition = mVideoBeans.size() - 1;
+            currentPosition = mLearnDetail.getData().size() - 1;
         }
         pauseVideo();
         SharePreferenceUtils.setCurrentProgress(this, 0, mPlayType);
@@ -271,13 +273,9 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     }
 
     public void playVideo() {
-        if (mVideoBeans != null&&mVideoBeans.size()>0) {
-            if (mIsFromVoice) {
-                SharePreferenceUtils.setCurrentIndex(this, currentPosition, mPlayType);
-                Log.d("music", "progress:" + SharePreferenceUtils.getCurrentProgress(this, mPlayType));
-            }
+        if (mLearnDetail != null&&mLearnDetail.getData()!=null&&mLearnDetail.getData().size()>0) {
             try {
-                playVideoWIthUrl(mVideoBeans.get(currentPosition).path);
+                playVideoWIthUrl(mLearnDetail.getData().get(currentPosition).getPath());
             } catch (IllegalStateException e) {
                 mediaPlayer.release();
                 mediaPlayer = new MediaPlayer();
@@ -297,9 +295,6 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         }
 
         mediaPlayer.start();
-        if (mIsFromVoice) {
-            mediaPlayer.seekTo(SharePreferenceUtils.getCurrentProgress(this, mPlayType));
-        }
         mVideoSize = mediaPlayer.getDuration();
         mSeekbar.setMax(mVideoSize);
         mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_GET_PROGRESS, GET_PROGRESS_TIME);
@@ -310,10 +305,12 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         int second = time / 1000;
         int min = second / 60;
         int hour = min / 60;
-        if (second >= 60)
+        if (second >= 60) {
             second = second % 60;
-        if (min >= 60)
+        }
+        if (min >= 60) {
             min = min % 60;
+        }
         return String.format("%02d", hour) + " : " + String.format("%02d", min) + " : " + String.format("%02d", second);
     }
 
@@ -336,6 +333,30 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         mediaPlayer = null;
     }
 
+    public void requestDataSource(int id) {
+        mRequest = new Request.Builder().url(RetrofitUtils.LEARN_DETAIL_LIST+id ).build();
+        okHttpClient = new OkHttpClient();
+        Call call = okHttpClient.newCall(mRequest);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String body = response.body().string();
+                Log.d(TAG, "" + body);
+                Gson gson = new Gson();
+                mLearnDetail = gson.fromJson(body, LearnDetailfBeans.class);
+                if (mLearnDetail != null) {
+                    mHandler.sendEmptyMessage(MESSAGE_WHAT_NOTIFY_CHANGE);
+                }
+
+            }
+        });
+    }
+
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
 
@@ -354,9 +375,6 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         if (b) {
-            if (mIsFromVoice) {
-                SharePreferenceUtils.setCurrentProgress(this, i, mPlayType);
-            }
             mediaPlayer.seekTo(i);
         }
     }
@@ -371,12 +389,6 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
     }
 
-    public void requestDataSource() {
-
-        mAdapter.notifyDataSetChanged();
-    }
-
-
     class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
@@ -386,12 +398,6 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            if (mIsMusic) {
-                ((GalleryHolder) holder).image.setVisibility(GONE);
-                ((GalleryHolder) holder).mTitle.setVisibility(View.VISIBLE);
-            } else {
-
-            }
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -400,12 +406,17 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                     playVideo();
                 }
             });
-            ((GalleryHolder) holder).mTitle.setText(mVideoBeans.get(position).title);
+            ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().get(position).getWord());
+            Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().get(position).getImagePath()).into(((GalleryHolder) holder).image);
         }
 
         @Override
         public int getItemCount() {
-            return mVideoBeans.size();
+            if (mLearnDetail!=null&&mLearnDetail.getData()!=null) {
+                return mLearnDetail.getData().size();
+            }else {
+                return 0;
+            }
         }
 
         class GalleryHolder extends RecyclerView.ViewHolder {
@@ -416,9 +427,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                 super(itemView);
                 image = itemView.findViewById(R.id.gallery_item_iv);
                 mTitle = itemView.findViewById(R.id.tv_title);
-                mTitle.setVisibility(View.INVISIBLE);
                 mIvBg = itemView.findViewById(R.id.gallery_item_bg);
-                mIvBg.setVisibility(View.GONE);
             }
         }
     }
