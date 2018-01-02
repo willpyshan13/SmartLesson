@@ -1,5 +1,6 @@
 package cn.smart.smartlesson;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,13 +17,16 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 
 import cn.smart.smartlesson.bean.LearnDetailfBeans;
 import cn.smart.smartlesson.bean.LearnInfoBean;
+import cn.smart.smartlesson.utils.Constants;
 import cn.smart.smartlesson.utils.RetrofitUtils;
 import cn.smart.smartlesson.widget.LessonLayout;
 import okhttp3.Call;
@@ -36,34 +40,34 @@ import okhttp3.Response;
  */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private HorizontalScrollView mScrollView;
-    private LinearLayout mLInearLayout;
+    MainAdapter mMainAdapter;
     private OkHttpClient okHttpClient;
+
     private Request mRequest;
     private LearnInfoBean mLearnBeans;
+    private RecyclerView mRecycle;
     private static final int MESSAGE_WHAT_NOTIFY_CHANGE = 3;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
             if (msg.what == MESSAGE_WHAT_NOTIFY_CHANGE) {
                 if (mLearnBeans!=null&&mLearnBeans.getData()!=null&&mLearnBeans.getData().getContent()!=null){
-                    LessonLayout lessonLayout = new LessonLayout(MainActivity.this);
-                    mLInearLayout.addView(lessonLayout);
-                    lessonLayout.setData(mLearnBeans.getData().getContent());
+                    mMainAdapter.notifyDataSetChanged();
                 }
             }
-        }
-
-        ;
+        };
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mScrollView = findViewById(R.id.main_scrollview);
-        hideSystemUiVisible(mScrollView);
-
-        mLInearLayout = findViewById(R.id.main_scroll_linear);
+        mRecycle = findViewById(R.id.main_recycle);
+        hideSystemUiVisible(mRecycle);
+        GridLayoutManager manager = new GridLayoutManager(this,1);
+        manager.setOrientation(GridLayoutManager.HORIZONTAL);
+        mRecycle.setLayoutManager(manager);
+        mMainAdapter = new MainAdapter();
+        mRecycle.setAdapter(mMainAdapter);
         requestDataSource();
     }
 
@@ -89,6 +93,68 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    class MainAdapter extends RecyclerView.Adapter{
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == Constants.PAGE_POSITION_ONE) {
+                return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_one, null));
+            }else if(viewType == Constants.PAGE_POSITION_TWO){
+                return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_two, null));
+            }else if(viewType == Constants.PAGE_POSITION_THREE){
+                return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_three, null));
+            }else if(viewType == Constants.PAGE_POSITION_FOUR){
+                return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_four, null));
+            }else if(viewType == Constants.PAGE_POSITION_FIVE){
+                return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_five, null));
+            }else if(viewType == Constants.PAGE_POSITION_SIX){
+                return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_six, null));
+            }else{
+                return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_seven, null));
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+            ((MainHolder)holder).mTvTitle.setText(mLearnBeans.getData().getContent().get(position).getName());
+            Glide.with(MainActivity.this).load(mLearnBeans.getData().getContent().get(position).getImagePath()).into(((MainHolder)holder).mBg);
+            ((MainHolder)holder).layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, VideoPlayActivity.class);
+                    intent.putExtra(Constants.ID,mLearnBeans.getData().getContent().get(position));
+                    MainActivity.this.startActivity(intent);
+                }
+            });
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position%Constants.PAGE_COUNT;
+        }
+
+        @Override
+        public int getItemCount() {
+            if (mLearnBeans!=null&&mLearnBeans.getData()!=null&&mLearnBeans.getData().getContent()!=null){
+                return mLearnBeans.getData().getContent().size();
+            }else {
+                return 0;
+            }
+        }
+
+        class MainHolder extends RecyclerView.ViewHolder{
+            private LinearLayout layout;
+            ImageView mBg,mStatus;
+            TextView mTvTitle;
+            public MainHolder(View itemView) {
+                super(itemView);
+                layout = itemView.findViewById(R.id.ll_one);
+                mBg = itemView.findViewById(R.id.iv_one);
+                mTvTitle = itemView.findViewById(R.id.tv_one);
+            }
+        }
     }
 
     /**

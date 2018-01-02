@@ -3,15 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/kt_bgt"
     tools:context="cn.smart.smartlesson.MainActivity">
-    <HorizontalScrollView
-        android:id="@+id/main_scrollview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_recycle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/main_scroll_linear"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="match_parent"></LinearLayout>
-    </HorizontalScrollView>
+        android:layout_height="match_parent"/>
 </RelativeLayout>
