@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private LearnInfoBean mLearnBeans;
     private RecyclerView mRecycle;
     private static final int MESSAGE_WHAT_NOTIFY_CHANGE = 3;
+    RequestOptions myOptions = new RequestOptions().circleCrop();
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -119,13 +122,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ((MainHolder)holder).mTvTitle.setText(mLearnBeans.getData().getContent().get(position).getName());
-            Glide.with(MainActivity.this).load(mLearnBeans.getData().getContent().get(position).getImagePath()).into(((MainHolder)holder).mBg);
+            if (mLearnBeans.getData().getContent().get(position).getStatus() == 0){
+                ((MainHolder)holder).mStatus.setBackgroundResource(R.drawable.kt_tp);
+            }else {
+                ((MainHolder)holder).mStatus.setBackgroundResource(R.drawable.kt_wjs);
+            }
+            Glide.with(MainActivity.this).load(mLearnBeans.getData().getContent().get(position).getImagePath()).apply(myOptions).into(((MainHolder)holder).mBg);
             ((MainHolder)holder).layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this, VideoPlayActivity.class);
-                    intent.putExtra(Constants.ID,mLearnBeans.getData().getContent().get(position));
-                    MainActivity.this.startActivity(intent);
+                    if (mLearnBeans.getData().getContent().get(position).getStatus() == 0) {
+                        Intent intent = new Intent(MainActivity.this, VideoPlayActivity.class);
+                        intent.putExtra(Constants.ID, mLearnBeans.getData().getContent().get(position));
+                        MainActivity.this.startActivity(intent);
+                    }
                 }
             });
         }
@@ -145,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         class MainHolder extends RecyclerView.ViewHolder{
-            private LinearLayout layout;
+            private RelativeLayout layout;
             ImageView mBg,mStatus;
             TextView mTvTitle;
             public MainHolder(View itemView) {
@@ -153,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 layout = itemView.findViewById(R.id.ll_one);
                 mBg = itemView.findViewById(R.id.iv_one);
                 mTvTitle = itemView.findViewById(R.id.tv_one);
+                mStatus = itemView.findViewById(R.id.iv_circle);
             }
         }
     }

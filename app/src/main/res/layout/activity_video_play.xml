@@ -4,14 +4,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/ke_background">
 
-
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:src="@drawable/kt_bt" />
-
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -28,6 +25,7 @@
         <RelativeLayout
             android:id="@+id/video_layout"
             android:layout_width="match_parent"
+            android:background="@drawable/common_btn_cornor_normal"
             android:layout_height="@dimen/lesson_play_video_small_height"
             android:layout_marginLeft="@dimen/lesson_play_video_margin_left"
             android:layout_marginTop="@dimen/lesson_play_video_margin_top"
@@ -45,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:src="@drawable/kt_play_big" />
-
 
         </RelativeLayout>
 
@@ -74,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/kt_play_little" />
+            android:src="@drawable/bfq_zt_1" />
 
         <ImageView
             android:id="@+id/iv_next"

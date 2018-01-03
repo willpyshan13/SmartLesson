@@ -28,7 +28,6 @@ public class CircleSurfaceView extends SurfaceView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         Path path = new Path();
         //用矩形表示SurfaceView宽高
         RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
