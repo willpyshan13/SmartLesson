@@ -116,7 +116,7 @@
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/video_margin"
+        android:layout_margin="@dimen/play_margin_top"
         android:src="@drawable/kt_back" />
     <TextView
         android:id="@+id/tv_title"
@@ -136,6 +136,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/lesson_play_complete_margin_bottom"
-        android:text="已经有9位小朋友学完该课程"
+        android:text="9 children have already finished the course"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 </RelativeLayout>

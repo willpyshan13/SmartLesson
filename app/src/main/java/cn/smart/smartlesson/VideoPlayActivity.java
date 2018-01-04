@@ -284,6 +284,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     public void playNext() {
         if (currentPosition == 0){
             mIsFinishFirstVideo = true;
+            mAdapter.notifyDataSetChanged();
         }
         currentPosition++;
         if (currentPosition == mLearnDetail.getData().size()) {
@@ -455,6 +456,11 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                     }
                 }
             });
+            if (mIsFinishFirstVideo){
+                ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_play_little));
+            }else {
+                ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.button_play_unclick));
+            }
             ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().get(position).getWord());
             Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().get(position).getImagePath()).into(((GalleryHolder) holder).image);
         }

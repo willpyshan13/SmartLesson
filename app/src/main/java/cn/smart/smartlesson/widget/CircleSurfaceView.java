@@ -6,6 +6,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 
 /**
@@ -14,6 +15,7 @@ import android.view.SurfaceView;
  * @createdTime: 2017/12/28 14:55
  */
 public class CircleSurfaceView extends SurfaceView {
+    private static final String TAG = "CircleSurfaceView";
     public CircleSurfaceView(Context context) {
         super(context);
     }
@@ -28,6 +30,7 @@ public class CircleSurfaceView extends SurfaceView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.d(TAG,"onDraw  ");
         Path path = new Path();
         //用矩形表示SurfaceView宽高
         RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
