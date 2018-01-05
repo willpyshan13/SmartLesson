@@ -267,6 +267,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         mCurrentDisplayBig = false;
         mSurfaceView.setBackground(getResources().getDrawable(R.drawable.kt_video_bg));
         mVideoLayout.setLayoutParams(mPreParams);
+        mVideoList.setVisibility(View.VISIBLE);
         mTvComplete.setVisibility(View.VISIBLE);
         setVisbility(View.INVISIBLE);
         findView(R.id.back).setVisibility(View.VISIBLE);
