@@ -2,6 +2,7 @@ package cn.smart.smartlesson;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +25,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.smart.smartlesson.bean.LearnDetailfBeans;
 import cn.smart.smartlesson.bean.LearnInfoBean;
@@ -43,18 +46,27 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     MainAdapter mMainAdapter;
     private OkHttpClient okHttpClient;
-
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private Request mRequest;
     private LearnInfoBean mLearnBeans;
+    private boolean mNeedRefresh = false;
+    private List<LearnInfoBean.DataBean.ContentBean> mLearnInfoList;
     private RecyclerView mRecycle;
     private static final int MESSAGE_WHAT_NOTIFY_CHANGE = 3;
+    private int mCurrentPage = 1;
+    private int mPageSize = 20;
     RequestOptions myOptions = new RequestOptions().circleCrop();
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
             if (msg.what == MESSAGE_WHAT_NOTIFY_CHANGE) {
-                if (mLearnBeans!=null&&mLearnBeans.getData()!=null&&mLearnBeans.getData().getContent()!=null){
+                mSwipeRefreshLayout.setRefreshing(false);
+                if (mNeedRefresh){
+                    mRecycle.scrollToPosition(0);
+                    mNeedRefresh = false;
+                }
+                if (mLearnInfoList!=null){
                     mMainAdapter.notifyDataSetChanged();
                 }
             }
@@ -64,18 +76,47 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
+    }
+
+    private void initView() {
         mRecycle = findViewById(R.id.main_recycle);
+        mLearnInfoList = new ArrayList<>();
+        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mNeedRefresh = true;
+                mCurrentPage =1;
+                requestDataSource(mCurrentPage,mPageSize);
+            }
+        });
         hideSystemUiVisible(mRecycle);
         GridLayoutManager manager = new GridLayoutManager(this,1);
+        mRecycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (mRecycle.canScrollHorizontally(1)){
+                    mCurrentPage++;
+                    requestDataSource(mCurrentPage,mPageSize);
+                }
+            }
+        });
         manager.setOrientation(GridLayoutManager.HORIZONTAL);
         mRecycle.setLayoutManager(manager);
         mMainAdapter = new MainAdapter();
         mRecycle.setAdapter(mMainAdapter);
-        requestDataSource();
+        requestDataSource(mCurrentPage,mPageSize);
     }
 
-    public void requestDataSource() {
-        mRequest = new Request.Builder().url(RetrofitUtils.LEARN_LIST ).build();
+    public void requestDataSource(int page,int size) {
+        mRequest = new Request.Builder().url(RetrofitUtils.LEARN_LIST+"?currentPage="+page+"&pageSize"+size ).build();
         okHttpClient = new OkHttpClient();
         Call call = okHttpClient.newCall(mRequest);
         call.enqueue(new Callback() {
@@ -90,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "" + body);
                 Gson gson = new Gson();
                 mLearnBeans = gson.fromJson(body, LearnInfoBean.class);
+                if (mNeedRefresh){
+                    mLearnInfoList.clear();
+                }
+                mLearnInfoList.addAll(mLearnBeans.getData().getContent());
                 if (mLearnBeans != null) {
                     mHandler.sendEmptyMessage(MESSAGE_WHAT_NOTIFY_CHANGE);
                 }
@@ -121,19 +166,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            ((MainHolder)holder).mTvTitle.setText(mLearnBeans.getData().getContent().get(position).getName());
-            if (mLearnBeans.getData().getContent().get(position).getStatus() == 0){
+            ((MainHolder)holder).mTvTitle.setText(mLearnInfoList.get(position).getName());
+            if (mLearnInfoList.get(position).getStatus() == 0){
                 ((MainHolder)holder).mStatus.setBackgroundResource(R.drawable.kt_tp);
             }else {
                 ((MainHolder)holder).mStatus.setBackgroundResource(R.drawable.kt_wjs);
             }
-            Glide.with(MainActivity.this).load(mLearnBeans.getData().getContent().get(position).getImagePath()).apply(myOptions).into(((MainHolder)holder).mBg);
+            Glide.with(MainActivity.this).load(mLearnInfoList.get(position).getImagePath()).apply(myOptions).into(((MainHolder)holder).mBg);
             ((MainHolder)holder).layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mLearnBeans.getData().getContent().get(position).getStatus() == 0) {
+                    if (mLearnInfoList.get(position).getStatus() == 0) {
                         Intent intent = new Intent(MainActivity.this, VideoPlayActivity.class);
-                        intent.putExtra(Constants.ID, mLearnBeans.getData().getContent().get(position));
+                        intent.putExtra(Constants.ID, mLearnInfoList.get(position));
                         MainActivity.this.startActivity(intent);
                     }
                 }
@@ -147,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            if (mLearnBeans!=null&&mLearnBeans.getData()!=null&&mLearnBeans.getData().getContent()!=null){
-                return mLearnBeans.getData().getContent().size();
+            if (mLearnInfoList!=null){
+                return mLearnInfoList.size();
             }else {
                 return 0;
             }

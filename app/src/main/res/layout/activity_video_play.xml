@@ -25,7 +25,6 @@
         <RelativeLayout
             android:id="@+id/video_layout"
             android:layout_width="match_parent"
-            android:background="@drawable/common_btn_cornor_normal"
             android:layout_height="@dimen/lesson_play_video_small_height"
             android:layout_marginLeft="@dimen/lesson_play_video_margin_left"
             android:layout_marginTop="@dimen/lesson_play_video_margin_top"
@@ -34,6 +33,7 @@
 
             <cn.smart.smartlesson.widget.CircleSurfaceView
                 android:id="@+id/sv_video_play"
+                android:background="@drawable/kt_video_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -49,7 +49,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/video_recycle"
             android:layout_marginTop="@dimen/lesson_play_video_margin_top"
-            android:layout_marginRight="@dimen/lesson_play_video_margin_left"
+            android:layout_marginRight="@dimen/lesson_play_list_margin_right"
             android:layout_width="@dimen/lesson_play_video_right_width"
             android:layout_height="@dimen/lesson_play_video_small_list_height"
             android:layout_alignParentRight="true"
@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="@dimen/play_margin_top"
+        android:layout_marginTop="@dimen/play_title_margin_top"
         android:text="机灵宝宝乐园"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -134,8 +134,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:textColor="@color/video_play_list_bg"
+        android:layout_marginLeft="@dimen/lesson_play_text_margin_left"
         android:layout_marginBottom="@dimen/lesson_play_complete_margin_bottom"
-        android:text="9 children have already finished the course"
+        android:text="0 children have already finished the course"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 </RelativeLayout>

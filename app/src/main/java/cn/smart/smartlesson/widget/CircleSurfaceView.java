@@ -27,17 +27,4 @@ public class CircleSurfaceView extends SurfaceView {
     public CircleSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        Log.d(TAG,"onDraw  ");
-        Path path = new Path();
-        //用矩形表示SurfaceView宽高
-        RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
-        //15.0f即是圆角半径
-        path.addRoundRect(rect, 15.0f, 15.0f, Path.Direction.CCW);
-        //裁剪画布，并设置其填充方式
-        canvas.clipPath(path, Region.Op.REPLACE);
-        super.draw(canvas);
-    }
 }

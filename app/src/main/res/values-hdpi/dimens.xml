@@ -17,9 +17,11 @@
     <dimen name="lesson_play_video_small_height">500dp</dimen>
     <dimen name="lesson_play_video_small_list_height">540dp</dimen>
     <dimen name="lesson_play_video_small_width">700dp</dimen>
-    <dimen name="lesson_play_video_margin_top">150dp</dimen>
+    <dimen name="lesson_play_video_margin_top">160dp</dimen>
+    <dimen name="lesson_play_text_margin_left">250dp</dimen>
     <dimen name="lesson_play_video_margin_left">100dp</dimen>
-    <dimen name="lesson_play_video_margin_right">50dp</dimen>
+    <dimen name="lesson_play_list_margin_right">160dp</dimen>
+    <dimen name="lesson_play_video_margin_right">20dp</dimen>
     <dimen name="lesson_play_complete_margin_bottom">90dp</dimen>
     <dimen name="lesson_play_video_right_width">250dp</dimen>
 
@@ -28,7 +30,8 @@
     <dimen name="video_text_margin_top">3dp</dimen>
     <dimen name="video_margin">10dp</dimen>
     <dimen name="video_margin_bottom">40dp</dimen>
-    <dimen name="play_margin_top">20dp</dimen>
+    <dimen name="play_title_margin_top">20dp</dimen>
+    <dimen name="play_margin_top">40dp</dimen>
     <dimen name="play_control_margin">40dp</dimen>
     <dimen name="play_item_padding_bottom">10dp</dimen>
     <dimen name="play_title_size">35sp</dimen>

@@ -7,12 +7,13 @@
     <ImageView
         android:id="@+id/gallery_item_iv"
         android:scaleType="fitXY"
+        android:alpha="0.6"
         android:layout_width="@dimen/gallery_item_width"
         android:layout_height="@dimen/gallery_video_height" />
     <ImageView
         android:id="@+id/gallery_item_bg"
         android:layout_centerInParent="true"
-        android:src="@drawable/button_play_unclick"
+        android:background="@drawable/button_play_unclick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView

@@ -1,7 +1,6 @@
 package cn.smart.smartlesson;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
@@ -24,15 +23,12 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 import cn.smart.baselibrary.utils.SharePreferenceUtils;
 import cn.smart.baselibrary.view.BaseActivity;
 import cn.smart.smartlesson.bean.LearnDetailfBeans;
 import cn.smart.smartlesson.bean.LearnInfoBean;
-import cn.smart.smartlesson.bean.VideoBeans;
 import cn.smart.smartlesson.utils.Constants;
 import cn.smart.smartlesson.utils.RetrofitUtils;
 import cn.smart.smartlesson.widget.CircleSurfaceView;
@@ -42,7 +38,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
 import static android.view.View.OnTouchListener;
@@ -66,10 +61,10 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     private GalleryAdapter mAdapter;
     private SeekBar mSeekbar;
     private RecyclerView mVideoList;
-    private TextView mTime, mTvComplete, mTvTitle,mTvProgress;
+    private TextView mTime, mTvComplete, mTvTitle, mTvProgress;
     private int HANDLER_MESSAGE_GET_PROGRESS = 1;
     private int HANDLER_MESSAGE_DISMISS_CONTROL = 2;
-    private int HANDLER_MESSAGE_PLAYVIDEO = 3;
+    private int HANDLER_MESSAGE_PLAY_VIDEO = 3;
     private static final int MESSAGE_WHAT_NOTIFY_CHANGE = 4;
     private static final int MESSAGE_WHAT_AUTO_MAX = 5;
     private long GET_PROGRESS_TIME = 1 * 1000;
@@ -88,12 +83,17 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                 showCurrentTime();
             } else if (msg.what == HANDLER_MESSAGE_DISMISS_CONTROL) {
                 setVisbility(INVISIBLE);
-                findView(R.id.back).setVisibility(INVISIBLE);
-            } else if (msg.what == HANDLER_MESSAGE_PLAYVIDEO) {
+                if (mCurrentDisplayBig) {
+                    findView(R.id.tv_title).setVisibility(INVISIBLE);
+                    findView(R.id.back).setVisibility(INVISIBLE);
+                }else {
+                    findView(R.id.tv_title).setVisibility(View.VISIBLE);
+                }
+            } else if (msg.what == HANDLER_MESSAGE_PLAY_VIDEO) {
                 playVideoWIthUrl("http://videos.smart-dog.cn/good%20night.mp4");
             } else if (msg.what == MESSAGE_WHAT_NOTIFY_CHANGE) {
                 startVideoPlay();
-            }else if(msg.what == MESSAGE_WHAT_AUTO_MAX){
+            } else if (msg.what == MESSAGE_WHAT_AUTO_MAX) {
                 setMaxVideo();
             }
         }
@@ -107,21 +107,17 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_GET_PROGRESS, GET_PROGRESS_TIME);
         }
     }
+
     private void startVideoPlay() {
         if (mLearnDetail.getData() != null && mLearnDetail.getData().size() > 0) {
             findView(R.id.iv_play).setVisibility(View.INVISIBLE);
             ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_2);
             playVideoWIthUrl(mLearnDetail.getData().get(0).getPath());
-            if (mLearnDetail.getData().size() == 1){
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mVideoList.getLayoutParams();
-                params.width =1;
-                mVideoList.setLayoutParams(params);
-                mVideoList.setVisibility(View.INVISIBLE);
-            }
             mAdapter.notifyDataSetChanged();
-            mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_AUTO_MAX,5*1000);
+            mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_AUTO_MAX, 5 * 1000);
         }
     }
+
     public void setVisbility(int visiblity) {
         mLlBottomControl.setVisibility(visiblity);
         findView(R.id.tv_title).setVisibility(visiblity);
@@ -140,20 +136,16 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
     private void handleTouchEvent() {
         Log.d(TAG, "handleTouchEvent   " + mVideoList.getVisibility() + "   " + mLlBottomControl.getVisibility());
-        if (!mCurrentDisplayBig){
-            setMaxVideo();
-        }else {
-            if (mVideoList.getVisibility() != View.VISIBLE) {
-                Log.d(TAG, "mVideoList.getVisibility() != View.VISIBLE   " + mVideoList.getVisibility() + "   " + mLlBottomControl.getVisibility());
-                if (mLlBottomControl.getVisibility() == View.VISIBLE) {
-                    setVisbility(View.INVISIBLE);
-                    findView(R.id.back).setVisibility(View.INVISIBLE);
-                    mHandler.removeMessages(HANDLER_MESSAGE_DISMISS_CONTROL);
-                } else {
-                    setVisbility(View.VISIBLE);
-                    findView(R.id.back).setVisibility(View.VISIBLE);
-                    mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_DISMISS_CONTROL, DISMISS_CONTROL_TIME);
-                }
+        if (mVideoList.getVisibility() != View.VISIBLE) {
+            Log.d(TAG, "mVideoList.getVisibility() != View.VISIBLE   " + mVideoList.getVisibility() + "   " + mLlBottomControl.getVisibility());
+            if (mLlBottomControl.getVisibility() == View.VISIBLE) {
+                setVisbility(View.INVISIBLE);
+                findView(R.id.back).setVisibility(View.INVISIBLE);
+                mHandler.removeMessages(HANDLER_MESSAGE_DISMISS_CONTROL);
+            } else {
+                setVisbility(View.VISIBLE);
+                findView(R.id.back).setVisibility(View.VISIBLE);
+                mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_DISMISS_CONTROL, DISMISS_CONTROL_TIME);
             }
         }
     }
@@ -167,9 +159,9 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     protected void performClick(View v) {
         switch (v.getId()) {
             case R.id.back:
-                if (mCurrentDisplayBig){
+                if (mCurrentDisplayBig) {
                     setMinVideo();
-                }else {
+                } else {
                     finish();
                 }
                 break;
@@ -181,6 +173,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                 break;
             case R.id.iv_min:
                 mHandler.removeMessages(HANDLER_MESSAGE_DISMISS_CONTROL);
+                mHandler.removeMessages(MESSAGE_WHAT_AUTO_MAX);
                 setMinVideo();
                 break;
             case R.id.iv_play:
@@ -215,6 +208,25 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         mVideoList = findView(R.id.video_recycle);
         mVideoList.setLayoutManager(new GridLayoutManager(this, 1));
         mVideoList.setAdapter(mAdapter);
+        mSurfaceView.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (mCurrentDisplayBig) {
+                            handleTouchEvent();
+                        } else {
+                            setMaxVideo();
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+
+                        break;
+                }
+                return true;
+            }
+        });
+
         mVideoList.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -246,16 +258,17 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         mVideoList.setVisibility(View.INVISIBLE);
         mTvComplete.setVisibility(View.INVISIBLE);
         findView(R.id.iv_play).setVisibility(View.INVISIBLE);
+        mSurfaceView.setBackground(null);
         mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_DISMISS_CONTROL, DISMISS_CONTROL_TIME);
         setVisbility(View.VISIBLE);
     }
 
     public void setMinVideo() {
         mCurrentDisplayBig = false;
-        if (mLearnDetail.getData() != null && mLearnDetail.getData().size() >1){
+        if (mLearnDetail.getData() != null && mLearnDetail.getData().size() > 1) {
             mVideoList.setVisibility(View.VISIBLE);
         }
-
+        mSurfaceView.setBackground(getResources().getDrawable(R.drawable.kt_video_bg));
         mVideoLayout.setLayoutParams(mPreParams);
         mTvComplete.setVisibility(View.VISIBLE);
         setVisbility(View.INVISIBLE);
@@ -282,7 +295,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     }
 
     public void playNext() {
-        if (currentPosition == 0){
+        if (currentPosition == 0) {
             mIsFinishFirstVideo = true;
             mAdapter.notifyDataSetChanged();
         }
@@ -336,7 +349,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         try {
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepare();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -451,14 +464,14 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                         currentPosition = position;
                         SharePreferenceUtils.setCurrentProgress(VideoPlayActivity.this, 0, mPlayType);
                         playVideo();
-                    }else {
-                        Toast.makeText(VideoPlayActivity.this,"请先观看完第一个视频",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(VideoPlayActivity.this, "请先观看完第一个视频", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-            if (mIsFinishFirstVideo){
+            if (mIsFinishFirstVideo) {
                 ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_play_little));
-            }else {
+            } else {
                 ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.button_play_unclick));
             }
             ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().get(position).getWord());
