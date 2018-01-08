@@ -111,7 +111,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     private void startVideoPlay() {
         if (mLearnDetail.getData() != null && mLearnDetail.getData().size() > 0) {
             findView(R.id.iv_play).setVisibility(View.INVISIBLE);
-            ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_2);
+            ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model);
             playVideoWIthUrl(mLearnDetail.getData().get(0).getPath());
             mAdapter.notifyDataSetChanged();
             mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_AUTO_MAX, 5 * 1000);
@@ -120,6 +120,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
     public void setVisbility(int visiblity) {
         mLlBottomControl.setVisibility(visiblity);
+        findView(R.id.video_control_top).setVisibility(visiblity);
         findView(R.id.tv_title).setVisibility(visiblity);
     }
 
@@ -186,7 +187,6 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     protected void initView() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(this);
-
         mTvProgress = findView(R.id.tv_progress_time);
         mVideoLayout = findView(R.id.video_layout);
         mLlBottomControl = findView(R.id.video_control);
@@ -311,10 +311,10 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             if (mediaPlayer.isPlaying()) {
                 SharePreferenceUtils.setCurrentProgress(this, mediaPlayer.getCurrentPosition(), mPlayType);
                 mediaPlayer.pause();
-                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_1);
+                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model_play);
             } else {
                 mediaPlayer.start();
-                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.bfq_zt_2);
+                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model);
             }
         }
     }
@@ -458,16 +458,15 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mIsFinishFirstVideo) {
+                    if (mIsFinishFirstVideo||position==0) {
                         currentPosition = position;
-                        SharePreferenceUtils.setCurrentProgress(VideoPlayActivity.this, 0, mPlayType);
                         playVideo();
                     } else {
                         Toast.makeText(VideoPlayActivity.this, "请先观看完第一个视频", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-            if (mIsFinishFirstVideo) {
+            if (mIsFinishFirstVideo||position==0) {
                 ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_play_little));
             } else {
                 ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.button_play_unclick));

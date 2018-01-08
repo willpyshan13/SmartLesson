@@ -1,6 +1,7 @@
 package cn.smart.smartlesson;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +46,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     MainAdapter mMainAdapter;
+    MediaPlayer mMusicPlayer;
     private OkHttpClient okHttpClient;
     SwipeRefreshLayout mSwipeRefreshLayout;
     private Request mRequest;
@@ -180,10 +182,15 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, VideoPlayActivity.class);
                         intent.putExtra(Constants.ID, mLearnInfoList.get(position));
                         MainActivity.this.startActivity(intent);
+                        playTts(R.raw.openlesson);
+                    }else {
+                        playTts(R.raw.map_luyin_ni);
                     }
                 }
             });
         }
+
+
 
         @Override
         public int getItemViewType(int position) {
@@ -211,6 +218,14 @@ public class MainActivity extends AppCompatActivity {
                 mStatus = itemView.findViewById(R.id.iv_circle);
             }
         }
+    }
+
+    private void playTts(int res) {
+        if (mMusicPlayer!=null&&mMusicPlayer.isPlaying()){
+            mMusicPlayer.stop();
+        }
+        mMusicPlayer = MediaPlayer.create(this,res);
+        mMusicPlayer.start();
     }
 
     /**

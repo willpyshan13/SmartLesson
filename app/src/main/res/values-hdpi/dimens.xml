@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="lesson_margin_top">250dp</dimen>
-    <dimen name="lesson_margin_top_2">220dp</dimen>
+    <dimen name="lesson_margin_top_2">200dp</dimen>
     <dimen name="lesson_margin_left">50dp</dimen>
     <dimen name="lesson_play_margin">30dp</dimen>
     <dimen name="lesson_margin_left_1">70dp</dimen>
@@ -12,7 +12,7 @@
     <dimen name="lesson_play_margin_left">120dp</dimen>
     <dimen name="lesson_play_margin_top">90dp</dimen>
 
-    <dimen name="lesson_home_margin_top">15dp</dimen>
+    <dimen name="lesson_home_margin_top">35dp</dimen>
 
     <dimen name="lesson_play_video_small_height">500dp</dimen>
     <dimen name="lesson_play_video_small_list_height">540dp</dimen>
@@ -31,8 +31,9 @@
     <dimen name="video_margin">10dp</dimen>
     <dimen name="video_margin_bottom">40dp</dimen>
     <dimen name="play_title_margin_top">20dp</dimen>
-    <dimen name="play_margin_top">40dp</dimen>
+    <dimen name="play_margin_top">20dp</dimen>
     <dimen name="play_control_margin">40dp</dimen>
+    <dimen name="play_control_top_padding">50dp</dimen>
     <dimen name="play_item_padding_bottom">10dp</dimen>
     <dimen name="play_title_size">35sp</dimen>
     <dimen name="play_item_size">30sp</dimen>
@@ -43,6 +44,7 @@
     <dimen name="gallery_thumbnail_width">200dp</dimen>
     <dimen name="gallery_video_width">250dp</dimen>
     <dimen name="gallery_video_height">155dp</dimen>
+    <dimen name="gallery_video_margi_top">60dp</dimen>
     <dimen name="gallery_video_text_margin_bottom">20dp</dimen>
     <dimen name="gallery_margin">50dp</dimen>
     <dimen name="gallery_point_margin">37dp</dimen>

@@ -58,12 +58,24 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/video_control_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/video_play_half_trans"
+        android:padding="@dimen/play_control_top_padding"
+        android:gravity="center">
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/video_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/video_play_half_trans"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
-        android:layout_margin="@dimen/play_control_margin"
+        android:padding="@dimen/play_control_margin"
         android:gravity="center">
 
         <ImageView
@@ -71,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/bfq_zt_1" />
+            android:src="@drawable/kt_play_model" />
 
         <ImageView
             android:id="@+id/iv_next"

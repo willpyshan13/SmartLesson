@@ -29,10 +29,6 @@
             android:id="@+id/tv_one"
             android:layout_below="@+id/iv_circle"
             android:layout_marginTop="@dimen/lesson_home_margin_top"
-            android:layout_centerHorizontal="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/HomeTextView" />
     </RelativeLayout>
 </RelativeLayout>

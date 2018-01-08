@@ -12,8 +12,9 @@
         android:layout_height="@dimen/gallery_video_height" />
     <ImageView
         android:id="@+id/gallery_item_bg"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/gallery_video_margi_top"
         android:background="@drawable/button_play_unclick"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
