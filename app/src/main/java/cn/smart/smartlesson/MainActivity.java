@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Request mRequest;
     private LearnInfoBean mLearnBeans;
     private boolean mNeedRefresh = false;
+    private boolean mIsRequesting = false;
     private List<LearnInfoBean.DataBean.ContentBean> mLearnInfoList;
     private RecyclerView mRecycle;
     private static final int MESSAGE_WHAT_NOTIFY_CHANGE = 3;
@@ -104,9 +105,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (mRecycle.canScrollHorizontally(1)){
-                    mCurrentPage++;
-                    requestDataSource(mCurrentPage,mPageSize);
+                if (!mIsRequesting) {
+                    if (mRecycle.canScrollHorizontally(1)) {
+                        mCurrentPage++;
+                        mIsRequesting = true;
+                        requestDataSource(mCurrentPage, mPageSize);
+                    }
                 }
             }
         });
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                mIsRequesting = false;
             }
 
             @Override
