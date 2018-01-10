@@ -43,7 +43,7 @@
     <dimen name="gallery_thumbnail_height">155dp</dimen>
     <dimen name="gallery_thumbnail_width">200dp</dimen>
     <dimen name="gallery_video_width">250dp</dimen>
-    <dimen name="gallery_video_height">155dp</dimen>
+    <dimen name="gallery_video_height">137dp</dimen>
     <dimen name="gallery_video_margi_top">60dp</dimen>
     <dimen name="gallery_video_text_margin_bottom">20dp</dimen>
     <dimen name="gallery_margin">50dp</dimen>

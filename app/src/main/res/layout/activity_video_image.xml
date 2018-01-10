@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/video_margin"
     android:layout_width="@dimen/gallery_item_width"
-    android:layout_height="@dimen/gallery_item_height">
-    <ImageView
-        android:id="@+id/gallery_item_iv"
-        android:scaleType="fitXY"
-        android:alpha="0.6"
-        android:layout_width="@dimen/gallery_item_width"
-        android:layout_height="@dimen/gallery_video_height" />
-    <ImageView
-        android:id="@+id/gallery_item_bg"
-        android:layout_marginTop="@dimen/gallery_video_margi_top"
-        android:background="@drawable/button_play_unclick"
-        android:layout_centerHorizontal="true"
+    android:layout_height="@dimen/gallery_item_height"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/video_margin">
+
+    <RelativeLayout
+        android:id="@+id/video_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/gallery_item_iv"
+            android:layout_width="@dimen/gallery_item_width"
+            android:layout_height="@dimen/gallery_video_height"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/gallery_item_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:background="@drawable/kt_sp" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_title"
-        android:layout_below="@+id/gallery_item_iv"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="@dimen/video_text_margin_top"
-        android:maxEms="12"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textSize="@dimen/common_tv_size_normal"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/video_layout"
+        android:layout_marginTop="@dimen/video_text_margin_top"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:maxEms="12"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/common_tv_size_normal" />
 </RelativeLayout>

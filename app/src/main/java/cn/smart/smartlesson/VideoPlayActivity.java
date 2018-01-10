@@ -51,7 +51,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     private static final String TAG = "VideoPlayActivity";
     private LearnInfoBean.DataBean.ContentBean mLearnInfo;
     private String mPlayType = "";
-    MediaPlayer mediaPlayer;
+    MediaPlayer mMediaPlayer;
     CircleSurfaceView mSurfaceView;
     SurfaceHolder mSurfaceHolder;
     private RelativeLayout mVideoLayout;
@@ -82,11 +82,12 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             if (msg.what == HANDLER_MESSAGE_GET_PROGRESS) {
                 showCurrentTime();
             } else if (msg.what == HANDLER_MESSAGE_DISMISS_CONTROL) {
+                Log.d(TAG,"HANDLER_MESSAGE_DISMISS_CONTROL     "+INVISIBLE);
                 setVisbility(INVISIBLE);
                 if (mCurrentDisplayBig) {
                     findView(R.id.tv_title).setVisibility(INVISIBLE);
                     findView(R.id.back).setVisibility(INVISIBLE);
-                }else {
+                } else {
                     findView(R.id.tv_title).setVisibility(View.VISIBLE);
                 }
             } else if (msg.what == HANDLER_MESSAGE_PLAY_VIDEO) {
@@ -100,10 +101,10 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     };
 
     private void showCurrentTime() {
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mSeekbar.setProgress(mediaPlayer.getCurrentPosition());
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+            mSeekbar.setProgress(mMediaPlayer.getCurrentPosition());
             mTime.setText(getFormatTime(mVideoSize));
-            mTvProgress.setText(getFormatTime(mediaPlayer.getCurrentPosition()));
+            mTvProgress.setText(getFormatTime(mMediaPlayer.getCurrentPosition()));
             mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_GET_PROGRESS, GET_PROGRESS_TIME);
         }
     }
@@ -119,6 +120,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     }
 
     public void setVisbility(int visiblity) {
+        Log.d(TAG,"setVisbility  "+visiblity);
         mLlBottomControl.setVisibility(visiblity);
         findView(R.id.video_control_top).setVisibility(visiblity);
         findView(R.id.tv_title).setVisibility(visiblity);
@@ -185,8 +187,8 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
     @Override
     protected void initView() {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnCompletionListener(this);
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setOnCompletionListener(this);
         mTvProgress = findView(R.id.tv_progress_time);
         mVideoLayout = findView(R.id.video_layout);
         mLlBottomControl = findView(R.id.video_control);
@@ -302,18 +304,17 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             currentPosition = 0;
         }
         pauseVideo();
-        SharePreferenceUtils.setCurrentProgress(this, 0, mPlayType);
         playVideo();
     }
 
     public void pauseVideo() {
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                SharePreferenceUtils.setCurrentProgress(this, mediaPlayer.getCurrentPosition(), mPlayType);
-                mediaPlayer.pause();
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
+                SharePreferenceUtils.setCurrentProgress(this, mMediaPlayer.getCurrentPosition(), mPlayType);
+                mMediaPlayer.pause();
                 ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model_play);
             } else {
-                mediaPlayer.start();
+                mMediaPlayer.start();
                 ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model);
             }
         }
@@ -334,25 +335,27 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             try {
                 playVideoWIthUrl(mLearnDetail.getData().get(currentPosition).getPath());
             } catch (IllegalStateException e) {
-                mediaPlayer.release();
-                mediaPlayer = new MediaPlayer();
-                mediaPlayer.setSurface(mSurfaceHolder.getSurface());
-                mediaPlayer.setOnCompletionListener(this);
+                mMediaPlayer.release();
+                mMediaPlayer = new MediaPlayer();
+                mMediaPlayer.setSurface(mSurfaceHolder.getSurface());
+                mMediaPlayer.setOnCompletionListener(this);
                 playVideo();
             }
         }
     }
 
     private void playVideoWIthUrl(String url) {
+        handleTouchEvent();
         try {
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare();
+            mMediaPlayer.reset();
+            mMediaPlayer.setDataSource(url);
+            mMediaPlayer.prepare();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        mediaPlayer.start();
-        mVideoSize = mediaPlayer.getDuration();
+        mMediaPlayer.start();
+        mVideoSize = mMediaPlayer.getDuration();
         mSeekbar.setMax(mVideoSize);
         mHandler.sendEmptyMessageDelayed(HANDLER_MESSAGE_GET_PROGRESS, GET_PROGRESS_TIME);
     }
@@ -375,7 +378,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         mSurfaceHolder = surfaceHolder;
-        mediaPlayer.setSurface(mSurfaceHolder.getSurface());
+        mMediaPlayer.setSurface(mSurfaceHolder.getSurface());
         playVideo();
     }
 
@@ -386,8 +389,8 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     }
 
     private void stopMediaplayer() {
-        mediaPlayer.release();
-        mediaPlayer = null;
+        mMediaPlayer.release();
+        mMediaPlayer = null;
     }
 
     public void requestDataSource(int id) {
@@ -426,13 +429,15 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        playNext();
+        if (!mMediaPlayer.isPlaying()) {
+            playNext();
+        }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         if (b) {
-            mediaPlayer.seekTo(i);
+            mMediaPlayer.seekTo(i);
         }
     }
 
@@ -458,7 +463,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mIsFinishFirstVideo||position==0) {
+                    if (mIsFinishFirstVideo) {
                         currentPosition = position;
                         playVideo();
                     } else {
@@ -466,10 +471,14 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                     }
                 }
             });
-            if (mIsFinishFirstVideo||position==0) {
-                ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_play_little));
+            if (position == 0) {
+                ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_sp_click));
             } else {
-                ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.button_play_unclick));
+                if (mIsFinishFirstVideo) {
+                    ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_sp_click));
+                } else {
+                    ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_sp));
+                }
             }
             ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().get(position).getWord());
             Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().get(position).getImagePath()).into(((GalleryHolder) holder).image);

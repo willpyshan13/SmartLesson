@@ -43,7 +43,7 @@ import okhttp3.Response;
 /**
  * @author pengysh
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private static final String TAG = "MainActivity";
     MainAdapter mMainAdapter;
     MediaPlayer mMusicPlayer;
@@ -133,18 +133,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String body = response.body().string();
-                Log.d(TAG, "" + body);
-                Gson gson = new Gson();
-                mLearnBeans = gson.fromJson(body, LearnInfoBean.class);
-                if (mNeedRefresh){
-                    mLearnInfoList.clear();
+                if(response.code() == 200) {
+                    String body = response.body().string();
+                    Log.d(TAG, "" + body);
+                    Gson gson = new Gson();
+                    mLearnBeans = gson.fromJson(body, LearnInfoBean.class);
+                    if (mNeedRefresh) {
+                        mLearnInfoList.clear();
+                    }
+                    mLearnInfoList.addAll(mLearnBeans.getData().getContent());
+                    if (mLearnBeans != null) {
+                        mHandler.sendEmptyMessage(MESSAGE_WHAT_NOTIFY_CHANGE);
+                    }
                 }
-                mLearnInfoList.addAll(mLearnBeans.getData().getContent());
-                if (mLearnBeans != null) {
-                    mHandler.sendEmptyMessage(MESSAGE_WHAT_NOTIFY_CHANGE);
-                }
-
             }
         });
     }
