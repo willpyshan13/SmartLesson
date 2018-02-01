@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/kt_bgt"
-    tools:context="cn.smart.smartlesson.MainActivity">
+    android:background="@drawable/kcxz_tp_bj_mr">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
@@ -17,12 +16,4 @@
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <ImageView
-        android:id="@+id/iv_min"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/lesson_margin_icon_right"
-        android:layout_height="wrap_content"
-        android:src="@drawable/kt_xb" />
 </RelativeLayout>
