@@ -23,4 +23,7 @@ public class RetrofitUtils {
     public static String LEARN_LIST = DEFAULT_URL+"/mobile/learn/list";
     public static String VIDEO_DETAIL_LIST = DEFAULT_URL+"/mobile/video/detail?videoId=";
     public static String LEARN_DETAIL_LIST = DEFAULT_URL+"/mobile/learn/detail?learnId=";
+
+    public static String LEARN_LEVEL_LIST = DEFAULT_URL+"/mobile/learn/levelList";
+    public static String LEARN_LESSON_LIST = DEFAULT_URL+"/mobile/learn/lessonList";
 }

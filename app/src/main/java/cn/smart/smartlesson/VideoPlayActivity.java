@@ -1,5 +1,9 @@
 package cn.smart.smartlesson;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -67,6 +71,13 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     private int HANDLER_MESSAGE_PLAY_VIDEO = 3;
     private static final int MESSAGE_WHAT_NOTIFY_CHANGE = 4;
     private static final int MESSAGE_WHAT_AUTO_MAX = 5;
+    // 暂停
+    public static final int CMD_PAUSE = 6;
+
+    public static final int CMD_REPLAY = 7;
+    public static final int CMD_NEXT = 8;
+    public static final int CMD_PRE = 9;
+    public static final int CMD_EXIT = 10;
     private long GET_PROGRESS_TIME = 1 * 1000;
     private long DISMISS_CONTROL_TIME = 5 * 1000;
     private int mVideoSize = 0;
@@ -76,13 +87,14 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     private LinearLayout mLlBottomControl;
     LearnDetailfBeans mLearnDetail;
     RelativeLayout.LayoutParams mPreParams;
+    MyReceive myReceive;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == HANDLER_MESSAGE_GET_PROGRESS) {
                 showCurrentTime();
             } else if (msg.what == HANDLER_MESSAGE_DISMISS_CONTROL) {
-                Log.d(TAG,"HANDLER_MESSAGE_DISMISS_CONTROL     "+INVISIBLE);
+                Log.d(TAG, "HANDLER_MESSAGE_DISMISS_CONTROL     " + INVISIBLE);
                 setVisbility(INVISIBLE);
                 if (mCurrentDisplayBig) {
                     findView(R.id.tv_title).setVisibility(INVISIBLE);
@@ -100,6 +112,28 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         }
     };
 
+    class MyReceive extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("cmd_action")) {
+                int control = intent.getIntExtra("cmd_action", 0);
+                if (control == CMD_PAUSE){
+                    pauseVideo();
+                }else if(control == CMD_REPLAY){
+                    rePlayVideo();
+                }else if(control == CMD_NEXT){
+                    playNext();
+                }else if(control == CMD_PRE){
+                    playPre();
+                }else if(control == CMD_EXIT){
+                    pauseVideo();
+                    VideoPlayActivity.this.finish();
+                }
+            }
+        }
+    }
+
     private void showCurrentTime() {
         if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
             mSeekbar.setProgress(mMediaPlayer.getCurrentPosition());
@@ -110,17 +144,17 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     }
 
     private void startVideoPlay() {
-        if (mLearnDetail.getData() != null && mLearnDetail.getData().size() > 0) {
+        if (mLearnDetail.getData() != null && mLearnDetail.getData().getLearnInfos().size() > 0) {
             findView(R.id.iv_play).setVisibility(View.INVISIBLE);
             ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model);
-            playVideoWIthUrl(mLearnDetail.getData().get(0).getPath());
+            playVideoWIthUrl(mLearnDetail.getData().getLearnInfos().get(0).getPath());
             mAdapter.notifyDataSetChanged();
             mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_AUTO_MAX, 5 * 1000);
         }
     }
 
     public void setVisbility(int visiblity) {
-        Log.d(TAG,"setVisbility  "+visiblity);
+        Log.d(TAG, "setVisbility  " + visiblity);
         mLlBottomControl.setVisibility(visiblity);
         findView(R.id.video_control_top).setVisibility(visiblity);
         findView(R.id.tv_title).setVisibility(visiblity);
@@ -187,6 +221,11 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
 
     @Override
     protected void initView() {
+        myReceive = new MyReceive();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("cmd_action");
+        registerReceiver(myReceive, filter);
+
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setOnCompletionListener(this);
         mTvProgress = findView(R.id.tv_progress_time);
@@ -300,11 +339,18 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             mAdapter.notifyDataSetChanged();
         }
         currentPosition++;
-        if (currentPosition == mLearnDetail.getData().size()) {
+        if (currentPosition == mLearnDetail.getData().getLearnInfos().size()) {
             currentPosition = 0;
         }
         pauseVideo();
         playVideo();
+    }
+
+    public void rePlayVideo() {
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+            mMediaPlayer.start();
+            ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model);
+        }
     }
 
     public void pauseVideo() {
@@ -313,9 +359,6 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                 SharePreferenceUtils.setCurrentProgress(this, mMediaPlayer.getCurrentPosition(), mPlayType);
                 mMediaPlayer.pause();
                 ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model_play);
-            } else {
-                mMediaPlayer.start();
-                ((ImageView) findView(R.id.iv_pause)).setImageResource(R.drawable.kt_play_model);
             }
         }
     }
@@ -323,7 +366,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     public void playPre() {
         currentPosition--;
         if (currentPosition == -1) {
-            currentPosition = mLearnDetail.getData().size() - 1;
+            currentPosition = mLearnDetail.getData().getLearnInfos().size() - 1;
         }
         pauseVideo();
         SharePreferenceUtils.setCurrentProgress(this, 0, mPlayType);
@@ -331,9 +374,9 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     }
 
     public void playVideo() {
-        if (mLearnDetail != null && mLearnDetail.getData() != null && mLearnDetail.getData().size() > 0) {
+        if (mLearnDetail != null && mLearnDetail.getData() != null && mLearnDetail.getData().getLearnInfos().size() > 0) {
             try {
-                playVideoWIthUrl(mLearnDetail.getData().get(currentPosition).getPath());
+                playVideoWIthUrl(mLearnDetail.getData().getLearnInfos().get(currentPosition).getPath());
             } catch (IllegalStateException e) {
                 mMediaPlayer.release();
                 mMediaPlayer = new MediaPlayer();
@@ -371,9 +414,8 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         if (min >= 60) {
             min = min % 60;
         }
-        return String.format("%02d", hour) + " : " + String.format("%02d", min) + " : " + String.format("%02d", second);
+        return String.format("%02d", hour) + ":" + String.format("%02d", min) + ":" + String.format("%02d", second);
     }
-
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -386,6 +428,7 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
     protected void onDestroy() {
         super.onDestroy();
         stopMediaplayer();
+        unregisterReceiver(myReceive);
     }
 
     private void stopMediaplayer() {
@@ -480,14 +523,14 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                     ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_sp));
                 }
             }
-            ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().get(position).getWord());
-            Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().get(position).getImagePath()).into(((GalleryHolder) holder).image);
+            ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().getLearnInfos().get(position).getWord());
+            Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().getLearnInfos().get(position).getImagePath()).into(((GalleryHolder) holder).image);
         }
 
         @Override
         public int getItemCount() {
             if (mLearnDetail != null && mLearnDetail.getData() != null) {
-                return mLearnDetail.getData().size();
+                return mLearnDetail.getData().getLearnInfos().size();
             } else {
                 return 0;
             }

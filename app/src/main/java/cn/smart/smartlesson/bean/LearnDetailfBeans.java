@@ -17,7 +17,8 @@ public class LearnDetailfBeans {
 
     private String message;
     private int status;
-    private List<DataBean> data;
+    private Data data;
+
 
     public String getMessage() {
         return message;
@@ -35,12 +36,42 @@ public class LearnDetailfBeans {
         this.status = status;
     }
 
-    public List<DataBean> getData() {
+    public Data getData()
+    {
         return data;
     }
 
-    public void setData(List<DataBean> data) {
+    public void setData(Data data)
+    {
         this.data = data;
+    }
+
+    public static class Data{
+        private List<DataBean> learnInfos;
+        private List<Game> gameLists;
+
+        public List<DataBean> getLearnInfos()
+        {
+            return learnInfos;
+        }
+
+        public void setLearnInfos(List<DataBean> learnInfos)
+        {
+            this.learnInfos = learnInfos;
+        }
+
+        public List<Game> getGameLists()
+        {
+            return gameLists;
+        }
+
+        public void setGameLists(List<Game> gameLists)
+        {
+            this.gameLists = gameLists;
+        }
+    }
+    public static class Game{
+
     }
 
     public static class DataBean {

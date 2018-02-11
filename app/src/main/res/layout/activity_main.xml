@@ -25,4 +25,13 @@
         android:layout_marginRight="@dimen/lesson_margin_icon_right"
         android:layout_height="wrap_content"
         android:src="@drawable/kt_xb" />
+
+    <ImageView
+        android:id="@+id/main_iv_back"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/grzx_an_xl_mr"
+        android:layout_margin="30dp"
+        />
+
 </RelativeLayout>

@@ -16,6 +16,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals("release")) {
+            variant.outputs.all { output ->
+                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+//                    def date = new java.text.SimpleDateFormat("yyyy_MM_dd").format(new Date())//时间
+                    //输出包名 variant.productFlavors[0].name} 渠道名称
+//                    def FileName = "wificlubV${defaultConfig.versionName}.apk"
+//                    outputFileName=" ${variant.applicationId}- ${ buildType.name}- ${defaultConfig.versionName}-${ defaultConfig.versionCode }-${releaseTime() }.apk"
+                    outputFileName = "SmartLessonV${defaultConfig.versionName}-${releaseTime()}.apk"
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -31,7 +45,13 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     compile 'jp.wasabeef:glide-transformations:3.0.1'
-    // If you want to use the GPU Filters
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     implementation project(':baselibrary')
+    compile "io.reactivex.rxjava2:rxjava:2.1.9"
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+}
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd")
 }
