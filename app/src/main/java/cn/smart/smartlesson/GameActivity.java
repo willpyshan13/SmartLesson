@@ -38,9 +38,9 @@ public class GameActivity extends BaseActivity {
         mTvTitle = findViewById(R.id.tv_title);
         mTvGameName = findViewById(R.id.tv_game_name);
         mLearnDetail = (LearnDetailfBeans) getIntent().getSerializableExtra("game_list");
-        if (mLearnDetail.getData().getGameLists()!=null){
-            mTvGameName.setText(mLearnDetail.getData().getGameLists().get(0).getGameName());
-            mTvTitle.setText(mLearnDetail.getData().getGameLists().get(0).getGameInfo());
+        if (mLearnDetail.getData().gameLists!=null){
+            mTvGameName.setText(mLearnDetail.getData().gameLists.get(0).getGameName());
+            mTvTitle.setText(mLearnDetail.getData().gameLists.get(0).getGameInfo());
         }
         mRecyclerView = this.findView(R.id.lesson_pick_recycle);
     }

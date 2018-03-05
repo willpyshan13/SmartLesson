@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/kcxz_tp_bj_mr">
+
+
+
+
+    <cn.smart.smartlesson.widget.VerticalSwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/kcxz_tp_bjk_mr"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/lesson_level_pick_margin_top_bottom"
+                android:layout_marginLeft="@dimen/lesson_level_pick_margin_left_right"
+                android:layout_marginRight="@dimen/lesson_level_pick_margin_left_right"
+                android:layout_marginTop="@dimen/lesson_level_pick_margin_top_bottom"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="95dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="课 程 选 择"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/lesson_level_pick_title_size"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/lesson_pick_recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="45dp"
+                    android:layout_marginRight="45dp"
+                    android:layout_marginLeft="43dp"
+                    android:gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+
+
+        </FrameLayout>
+
+    </cn.smart.smartlesson.widget.VerticalSwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/lesson_pick_iv_back"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/grzx_an_xl_mr"
+        android:layout_margin="30dp"
+        />
+
+</RelativeLayout>

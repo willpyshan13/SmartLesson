@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/adapter_lesson_level_iv_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/kcxz_tp_ejkc_mr"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/adapter_lesson_level_tv_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        tools:text="入 门 阶 段"
+        android:textSize="@dimen/lesson_level_pick_title_size"
+        android:textColor="@color/lesson_level_pick_label_color"
+        android:layout_alignBottom="@+id/adapter_lesson_level_iv_bg"
+        android:layout_marginBottom="30dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
