@@ -1,12 +1,7 @@
 package cn.smart.smartlesson.widget;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Path;
-import android.graphics.RectF;
-import android.graphics.Region;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceView;
 
 /**
@@ -16,6 +11,7 @@ import android.view.SurfaceView;
  */
 public class CircleSurfaceView extends SurfaceView {
     private static final String TAG = "CircleSurfaceView";
+
     public CircleSurfaceView(Context context) {
         super(context);
     }

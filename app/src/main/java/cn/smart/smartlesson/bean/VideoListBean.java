@@ -11,7 +11,10 @@ public class VideoListBean {
 
     /**
      * message : 成功
-     * data : {"content":[{"videoId":1,"videoTitle":"小猪佩奇","videoWheelPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoPreviewPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoBrief":"小猪佩奇","videoDesc":"小猪佩奇","videoDirector":"小猪佩奇","videoScriptwriter":"小猪佩奇","videoActor":"小猪佩奇","status":0,"createTime":"Sep 5, 2017 2:32:10 PM","hot":false,"wheel":false}],"pageable":{"page":0,"size":9},"total":1}
+     * data : {"content":[{"videoId":1,"videoTitle":"小猪佩奇","videoWheelPicUrl":"/image/upload/wheel/9/5/1504593087433.png",
+     * "videoPreviewPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoBrief":"小猪佩奇","videoDesc":"小猪佩奇","videoDirector":"小猪佩奇",
+     * "videoScriptwriter":"小猪佩奇","videoActor":"小猪佩奇","status":0,"createTime":"Sep 5, 2017 2:32:10 PM","hot":false,"wheel":false}],
+     * "pageable":{"page":0,"size":9},"total":1}
      */
 
     private String message;
@@ -35,7 +38,9 @@ public class VideoListBean {
 
     public static class DataBean {
         /**
-         * content : [{"videoId":1,"videoTitle":"小猪佩奇","videoWheelPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoPreviewPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoBrief":"小猪佩奇","videoDesc":"小猪佩奇","videoDirector":"小猪佩奇","videoScriptwriter":"小猪佩奇","videoActor":"小猪佩奇","status":0,"createTime":"Sep 5, 2017 2:32:10 PM","hot":false,"wheel":false}]
+         * content : [{"videoId":1,"videoTitle":"小猪佩奇","videoWheelPicUrl":"/image/upload/wheel/9/5/1504593087433.png",
+         * "videoPreviewPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoBrief":"小猪佩奇","videoDesc":"小猪佩奇","videoDirector":"小猪佩奇",
+         * "videoScriptwriter":"小猪佩奇","videoActor":"小猪佩奇","status":0,"createTime":"Sep 5, 2017 2:32:10 PM","hot":false,"wheel":false}]
          * pageable : {"page":0,"size":9}
          * total : 1
          */

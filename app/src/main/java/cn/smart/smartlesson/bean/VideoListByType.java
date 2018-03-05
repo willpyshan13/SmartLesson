@@ -11,7 +11,12 @@ public class VideoListByType {
 
     /**
      * message : 成功
-     * data : [{"videoId":11,"videoTitle":"英语小故事","videoWheelPicUrl":"/image/upload/wheel/9/6/1504678434126.png","videoPreviewPicUrl":"/image/upload/preview/9/6/1504678439175.png","videoBrief":"英语小故事","videoDesc":"英语小故事","videoDirector":"英语小故事","videoScriptwriter":"","videoActor":"英语小故事","status":0,"createTime":"Sep 6, 2017 2:14:01 PM","hot":false,"wheel":false},{"videoId":10,"videoTitle":"启蒙小故事","videoWheelPicUrl":"/image/upload/wheel/9/6/1504678373648.jpg","videoPreviewPicUrl":"/image/upload/preview/9/6/1504678379676.jpg","videoBrief":"启蒙小故事","videoDesc":"启蒙小故事","videoDirector":"启蒙小故事","videoScriptwriter":"","videoActor":"启蒙小故事","status":0,"createTime":"Sep 6, 2017 2:13:02 PM","hot":false,"wheel":false}]
+     * data : [{"videoId":11,"videoTitle":"英语小故事","videoWheelPicUrl":"/image/upload/wheel/9/6/1504678434126.png",
+     * "videoPreviewPicUrl":"/image/upload/preview/9/6/1504678439175.png","videoBrief":"英语小故事","videoDesc":"英语小故事","videoDirector":"英语小故事",
+     * "videoScriptwriter":"","videoActor":"英语小故事","status":0,"createTime":"Sep 6, 2017 2:14:01 PM","hot":false,"wheel":false},{"videoId":10,
+     * "videoTitle":"启蒙小故事","videoWheelPicUrl":"/image/upload/wheel/9/6/1504678373648.jpg",
+     * "videoPreviewPicUrl":"/image/upload/preview/9/6/1504678379676.jpg","videoBrief":"启蒙小故事","videoDesc":"启蒙小故事","videoDirector":"启蒙小故事",
+     * "videoScriptwriter":"","videoActor":"启蒙小故事","status":0,"createTime":"Sep 6, 2017 2:13:02 PM","hot":false,"wheel":false}]
      */
 
     private String message;

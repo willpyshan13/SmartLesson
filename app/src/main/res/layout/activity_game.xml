@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< .mine
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/kcxz_tp_bj_mr">
-||||||| .r187
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/kcxz_tp_bj_mr">
-=======
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/course_background">
->>>>>>> .r194
-
-
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="35dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@drawable/kt_tk"
+        android:text="课 程 选 择"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/lesson_level_pick_title_size" />
     <cn.smart.smartlesson.widget.VerticalSwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
@@ -30,25 +30,18 @@
                 android:layout_marginBottom="@dimen/lesson_level_pick_margin_top_bottom"
                 android:layout_marginLeft="@dimen/lesson_level_pick_margin_left_right"
                 android:layout_marginRight="@dimen/lesson_level_pick_margin_left_right"
-<<<<<<< .mine
-                android:layout_marginTop="@dimen/lesson_level_pick_margin_top_bottom">
-||||||| .r187
-                android:layout_marginTop="@dimen/lesson_level_pick_margin_top_bottom"
-                >
-=======
                 android:layout_marginTop="@dimen/lesson_level_pick_margin_top_bottom"
                 android:background="@drawable/kcxz_tp_bjk_mr"
-                android:orientation="vertical"
-                >
->>>>>>> .r194
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_game_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="95dp"
-                    android:text="@string/lesson_pick"
-                    android:textColor="@color/white"
+                    android:text="第一题"
+                    android:textColor="#FFFFFF"
                     android:textSize="@dimen/lesson_level_pick_title_size" />
 
                 <android.support.v7.widget.RecyclerView
@@ -59,38 +52,13 @@
                     android:layout_marginLeft="43dp"
                     android:layout_marginRight="45dp"
                     android:layout_marginTop="20dp"
-<<<<<<< .mine
-                    android:gravity="center_vertical" />
-||||||| .r187
-                    android:gravity="center_vertical"
-                    />
-=======
                     android:gravity="center_vertical"
                     android:overScrollMode="never"
-                    android:scrollbars="none"
-                    />
->>>>>>> .r194
+                    android:scrollbars="none" />
 
             </LinearLayout>
-
-
         </FrameLayout>
 
     </cn.smart.smartlesson.widget.VerticalSwipeRefreshLayout>
-
-    <ImageView
-        android:id="@+id/lesson_pick_iv_back"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_margin="30dp"
-        android:src="@drawable/grzx_an_xl_mr"
-<<<<<<< .mine
-        android:layout_margin="30dp" />
-||||||| .r187
-        android:layout_margin="30dp"
-        />
-=======
-        />
->>>>>>> .r194
 
 </RelativeLayout>

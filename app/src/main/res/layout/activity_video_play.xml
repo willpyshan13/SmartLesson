@@ -65,8 +65,7 @@
         android:visibility="gone"
         android:background="@color/video_play_half_trans"
         android:padding="@dimen/play_control_top_padding"
-        android:gravity="center">
-    </LinearLayout>
+        android:gravity="center"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/video_control"
@@ -91,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/kt_xyj" />
+
         <TextView
             android:id="@+id/tv_progress_time"
             android:layout_width="120dp"
@@ -99,6 +99,7 @@
             android:text="00:00"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/white" />
+
         <SeekBar
             android:id="@+id/video_progress"
             android:layout_width="wrap_content"
@@ -130,6 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/play_margin_top"
         android:src="@drawable/kt_back" />
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmartLesson</string>
+    <string name="lesson_pick">课程选择</string>
 </resources>

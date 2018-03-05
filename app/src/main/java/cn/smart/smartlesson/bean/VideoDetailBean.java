@@ -12,7 +12,13 @@ public class VideoDetailBean {
     /**
      * message : 获取成功
      * status : 200
-     * data : {"videoId":1,"videoTitle":"小猪佩奇","videoPreviewPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoDirector":"小猪佩奇","videoActor":"小猪佩奇","videoDesc":"小猪佩奇","isCollect":false,"isPraised":false,"list":[{"videoThumbmailUrl":"施迈特","videoUrlIndex":1,"videoTitle":"Best Friend","videoPlayUrl":"/video/Cartoon/Best Friend.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":2,"videoTitle":"Hide and Seek","videoPlayUrl":"/video/Cartoon/Hide and Seek.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":3,"videoTitle":"Polly Parrot","videoPlayUrl":"/video/Cartoon/Polly Parrot.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":4,"videoTitle":"Muddy Puddles","videoPlayUrl":"/video/Cartoon/Muddy Puddles.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":5,"videoTitle":"Mr Dinosaur is Los","videoPlayUrl":"/video/Cartoon/Mr Dinosaur is Lost.mp4"}]}
+     * data : {"videoId":1,"videoTitle":"小猪佩奇","videoPreviewPicUrl":"/image/upload/wheel/9/5/1504593087433.png","videoDirector":"小猪佩奇",
+     * "videoActor":"小猪佩奇","videoDesc":"小猪佩奇","isCollect":false,"isPraised":false,"list":[{"videoThumbmailUrl":"施迈特","videoUrlIndex":1,
+     * "videoTitle":"Best Friend","videoPlayUrl":"/video/Cartoon/Best Friend.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":2,"videoTitle":"Hide
+     * and Seek","videoPlayUrl":"/video/Cartoon/Hide and Seek.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":3,"videoTitle":"Polly Parrot",
+     * "videoPlayUrl":"/video/Cartoon/Polly Parrot.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":4,"videoTitle":"Muddy Puddles",
+     * "videoPlayUrl":"/video/Cartoon/Muddy Puddles.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":5,"videoTitle":"Mr Dinosaur is Los",
+     * "videoPlayUrl":"/video/Cartoon/Mr Dinosaur is Lost.mp4"}]}
      */
 
     private String message;
@@ -53,7 +59,11 @@ public class VideoDetailBean {
          * videoDesc : 小猪佩奇
          * isCollect : false
          * isPraised : false
-         * list : [{"videoThumbmailUrl":"施迈特","videoUrlIndex":1,"videoTitle":"Best Friend","videoPlayUrl":"/video/Cartoon/Best Friend.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":2,"videoTitle":"Hide and Seek","videoPlayUrl":"/video/Cartoon/Hide and Seek.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":3,"videoTitle":"Polly Parrot","videoPlayUrl":"/video/Cartoon/Polly Parrot.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":4,"videoTitle":"Muddy Puddles","videoPlayUrl":"/video/Cartoon/Muddy Puddles.mp4"},{"videoThumbmailUrl":"施迈特","videoUrlIndex":5,"videoTitle":"Mr Dinosaur is Los","videoPlayUrl":"/video/Cartoon/Mr Dinosaur is Lost.mp4"}]
+         * list : [{"videoThumbmailUrl":"施迈特","videoUrlIndex":1,"videoTitle":"Best Friend","videoPlayUrl":"/video/Cartoon/Best Friend.mp4"},
+         * {"videoThumbmailUrl":"施迈特","videoUrlIndex":2,"videoTitle":"Hide and Seek","videoPlayUrl":"/video/Cartoon/Hide and Seek.mp4"},
+         * {"videoThumbmailUrl":"施迈特","videoUrlIndex":3,"videoTitle":"Polly Parrot","videoPlayUrl":"/video/Cartoon/Polly Parrot.mp4"},
+         * {"videoThumbmailUrl":"施迈特","videoUrlIndex":4,"videoTitle":"Muddy Puddles","videoPlayUrl":"/video/Cartoon/Muddy Puddles.mp4"},
+         * {"videoThumbmailUrl":"施迈特","videoUrlIndex":5,"videoTitle":"Mr Dinosaur is Los","videoPlayUrl":"/video/Cartoon/Mr Dinosaur is Lost.mp4"}]
          */
 
         private int videoId;

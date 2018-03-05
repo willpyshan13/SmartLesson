@@ -13,7 +13,16 @@ public class LearnInfoBean {
     /**
      * message : 成功
      * status : 200
-     * data : {"content":[{"Id":7,"path":"11","type":"11","category":"1","info":"","name":"1111","startDay":"2017-12-29","startTime":"00:30:00","endTime":"01:30:00","imagePath":"1111","createTime":"Dec 29, 2017 2:40:02 PM","updateTime":"2017-12-29 14:40:02","status":0},{"Id":2,"path":"1","type":"1","category":"1","info":"","name":"kiss","startDay":"2017-12-07","startTime":"00:45:00","endTime":"01:45:00","imagePath":"1","updateTime":"2017-12-29 14:40:45","status":0},{"Id":3,"path":"1","type":"1","category":"1","info":"","name":"1","startDay":"2017-12-29","startTime":"00:45:00","endTime":"01:30:00","imagePath":"1","updateTime":"2017-12-29 14:40:42","status":0},{"Id":4,"path":"s","type":"s","category":"d","info":"","name":"sd","startDay":"2017-12-29","startTime":"00:15:00","endTime":"00:15:00","imagePath":"ds","updateTime":"2017-12-29 14:40:38","status":0},{"Id":5,"path":"23","type":"32","category":"32","info":"","name":"2","startDay":"2017-12-29","startTime":"01:00:00","endTime":"01:15:00","imagePath":"23","updateTime":"2017-12-29 14:40:34","status":0},{"Id":6,"path":"qw","type":"ewq","category":"wqe","info":"","name":"wqe","startDay":"2017-11-28","startTime":"00:15:00","endTime":"00:15:00","imagePath":"wq","updateTime":"2017-12-29 14:40:31","status":0}],"pageable":{"page":0,"size":9},"total":6}
+     * data : {"content":[{"Id":7,"path":"11","type":"11","category":"1","info":"","name":"1111","startDay":"2017-12-29","startTime":"00:30:00",
+     * "endTime":"01:30:00","imagePath":"1111","createTime":"Dec 29, 2017 2:40:02 PM","updateTime":"2017-12-29 14:40:02","status":0},{"Id":2,
+     * "path":"1","type":"1","category":"1","info":"","name":"kiss","startDay":"2017-12-07","startTime":"00:45:00","endTime":"01:45:00",
+     * "imagePath":"1","updateTime":"2017-12-29 14:40:45","status":0},{"Id":3,"path":"1","type":"1","category":"1","info":"","name":"1",
+     * "startDay":"2017-12-29","startTime":"00:45:00","endTime":"01:30:00","imagePath":"1","updateTime":"2017-12-29 14:40:42","status":0},{"Id":4,
+     * "path":"s","type":"s","category":"d","info":"","name":"sd","startDay":"2017-12-29","startTime":"00:15:00","endTime":"00:15:00",
+     * "imagePath":"ds","updateTime":"2017-12-29 14:40:38","status":0},{"Id":5,"path":"23","type":"32","category":"32","info":"","name":"2",
+     * "startDay":"2017-12-29","startTime":"01:00:00","endTime":"01:15:00","imagePath":"23","updateTime":"2017-12-29 14:40:34","status":0},{"Id":6,
+     * "path":"qw","type":"ewq","category":"wqe","info":"","name":"wqe","startDay":"2017-11-28","startTime":"00:15:00","endTime":"00:15:00",
+     * "imagePath":"wq","updateTime":"2017-12-29 14:40:31","status":0}],"pageable":{"page":0,"size":9},"total":6}
      */
 
     private String message;
@@ -46,7 +55,16 @@ public class LearnInfoBean {
 
     public static class DataBean {
         /**
-         * content : [{"Id":7,"path":"11","type":"11","category":"1","info":"","name":"1111","startDay":"2017-12-29","startTime":"00:30:00","endTime":"01:30:00","imagePath":"1111","createTime":"Dec 29, 2017 2:40:02 PM","updateTime":"2017-12-29 14:40:02","status":0},{"Id":2,"path":"1","type":"1","category":"1","info":"","name":"kiss","startDay":"2017-12-07","startTime":"00:45:00","endTime":"01:45:00","imagePath":"1","updateTime":"2017-12-29 14:40:45","status":0},{"Id":3,"path":"1","type":"1","category":"1","info":"","name":"1","startDay":"2017-12-29","startTime":"00:45:00","endTime":"01:30:00","imagePath":"1","updateTime":"2017-12-29 14:40:42","status":0},{"Id":4,"path":"s","type":"s","category":"d","info":"","name":"sd","startDay":"2017-12-29","startTime":"00:15:00","endTime":"00:15:00","imagePath":"ds","updateTime":"2017-12-29 14:40:38","status":0},{"Id":5,"path":"23","type":"32","category":"32","info":"","name":"2","startDay":"2017-12-29","startTime":"01:00:00","endTime":"01:15:00","imagePath":"23","updateTime":"2017-12-29 14:40:34","status":0},{"Id":6,"path":"qw","type":"ewq","category":"wqe","info":"","name":"wqe","startDay":"2017-11-28","startTime":"00:15:00","endTime":"00:15:00","imagePath":"wq","updateTime":"2017-12-29 14:40:31","status":0}]
+         * content : [{"Id":7,"path":"11","type":"11","category":"1","info":"","name":"1111","startDay":"2017-12-29","startTime":"00:30:00",
+         * "endTime":"01:30:00","imagePath":"1111","createTime":"Dec 29, 2017 2:40:02 PM","updateTime":"2017-12-29 14:40:02","status":0},{"Id":2,
+         * "path":"1","type":"1","category":"1","info":"","name":"kiss","startDay":"2017-12-07","startTime":"00:45:00","endTime":"01:45:00",
+         * "imagePath":"1","updateTime":"2017-12-29 14:40:45","status":0},{"Id":3,"path":"1","type":"1","category":"1","info":"","name":"1",
+         * "startDay":"2017-12-29","startTime":"00:45:00","endTime":"01:30:00","imagePath":"1","updateTime":"2017-12-29 14:40:42","status":0},
+         * {"Id":4,"path":"s","type":"s","category":"d","info":"","name":"sd","startDay":"2017-12-29","startTime":"00:15:00","endTime":"00:15:00",
+         * "imagePath":"ds","updateTime":"2017-12-29 14:40:38","status":0},{"Id":5,"path":"23","type":"32","category":"32","info":"","name":"2",
+         * "startDay":"2017-12-29","startTime":"01:00:00","endTime":"01:15:00","imagePath":"23","updateTime":"2017-12-29 14:40:34","status":0},
+         * {"Id":6,"path":"qw","type":"ewq","category":"wqe","info":"","name":"wqe","startDay":"2017-11-28","startTime":"00:15:00",
+         * "endTime":"00:15:00","imagePath":"wq","updateTime":"2017-12-29 14:40:31","status":0}]
          * pageable : {"page":0,"size":9}
          * total : 6
          */
@@ -105,7 +123,7 @@ public class LearnInfoBean {
             }
         }
 
-        public static class ContentBean implements Serializable{
+        public static class ContentBean implements Serializable {
             /**
              * Id : 7
              * path : 11

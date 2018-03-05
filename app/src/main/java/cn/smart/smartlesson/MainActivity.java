@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(android.os.Message msg)
-        {
+        public void handleMessage(android.os.Message msg) {
             if (msg.what == MESSAGE_WHAT_NOTIFY_CHANGE) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (mNeedRefresh) {
@@ -75,28 +74,24 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initData();
         initView();
     }
 
-    private void initData()
-    {
+    private void initData() {
         level = getIntent().getIntExtra("level", 1);
     }
 
-    private void initView()
-    {
+    private void initView() {
         mRecycle = findViewById(R.id.main_recycle);
         mLearnInfoList = new ArrayList<>();
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh()
-            {
+            public void onRefresh() {
                 mNeedRefresh = true;
                 mCurrentPage = 1;
                 requestDataSource(mCurrentPage, mPageSize);
@@ -106,14 +101,12 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager manager = new GridLayoutManager(this, 1);
         mRecycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
-            {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (!mIsRequesting) {
                     if (mRecycle.canScrollHorizontally(1)) {
@@ -129,31 +122,27 @@ public class MainActivity extends AppCompatActivity {
         mMainAdapter = new MainAdapter();
         mRecycle.setAdapter(mMainAdapter);
         requestDataSource(mCurrentPage, mPageSize);
-        iv_back=(ImageView) this.findViewById(R.id.main_iv_back);
+        iv_back = (ImageView) this.findViewById(R.id.main_iv_back);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 onBackPressed();
             }
         });
     }
 
-    public void requestDataSource(int page, int size)
-    {
+    public void requestDataSource(int page, int size) {
         mRequest = new Request.Builder().url(RetrofitUtils.LEARN_LIST + "?currentPage=" + page + "&pageSize" + size + "&level=" + level).build();
         okHttpClient = new OkHttpClient();
         Call call = okHttpClient.newCall(mRequest);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e)
-            {
+            public void onFailure(Call call, IOException e) {
                 mIsRequesting = false;
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException
-            {
+            public void onResponse(Call call, Response response) throws IOException {
                 if (response.code() == 200) {
                     String body = response.body().string();
                     Log.d(TAG, "" + body);
@@ -174,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
     class MainAdapter extends RecyclerView.Adapter {
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == Constants.PAGE_POSITION_ONE) {
                 return new MainHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_lesson_one, null));
             } else if (viewType == Constants.PAGE_POSITION_TWO) {
@@ -194,8 +182,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
-        {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ((MainHolder) holder).mTvTitle.setText(mLearnInfoList.get(position).getName());
             if (mLearnInfoList.get(position).getStatus() == 0) {
                 ((MainHolder) holder).mStatus.setBackgroundResource(R.drawable.kt_tp);
@@ -205,8 +192,7 @@ public class MainActivity extends AppCompatActivity {
             Glide.with(MainActivity.this).load(mLearnInfoList.get(position).getImagePath()).apply(myOptions).into(((MainHolder) holder).mBg);
             ((MainHolder) holder).layout.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
+                public void onClick(View view) {
                     if (mLearnInfoList.get(position).getStatus() == 0) {
                         Intent intent = new Intent(MainActivity.this, VideoPlayActivity.class);
                         intent.putExtra(Constants.ID, mLearnInfoList.get(position));
@@ -221,14 +207,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         @Override
-        public int getItemViewType(int position)
-        {
+        public int getItemViewType(int position) {
             return position % Constants.PAGE_COUNT;
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             if (mLearnInfoList != null) {
                 return mLearnInfoList.size();
             } else {
@@ -241,8 +225,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView mBg, mStatus;
             TextView mTvTitle;
 
-            public MainHolder(View itemView)
-            {
+            public MainHolder(View itemView) {
                 super(itemView);
                 layout = itemView.findViewById(R.id.ll_one);
                 mBg = itemView.findViewById(R.id.iv_one);
@@ -252,8 +235,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void playTts(int res)
-    {
+    private void playTts(int res) {
         if (mMusicPlayer != null && mMusicPlayer.isPlaying()) {
             mMusicPlayer.stop();
         }
@@ -266,6 +248,14 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view
      */
+<<<<<<< .mine
+    public void hideSystemUiVisible(View view) {
+        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+||||||| .r187
     public void hideSystemUiVisible(View view)
     {
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -273,5 +263,10 @@ public class MainActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+=======
+    public void hideSystemUiVisible(View view) {
+        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View
+                .SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+>>>>>>> .r194
     }
 }

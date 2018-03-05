@@ -51,7 +51,8 @@ import static android.view.View.OnTouchListener;
  * @Author: pengysh
  * @CreatedTime: 2017/6/22 20:01
  */
-public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Callback, MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener {
+public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Callback, MediaPlayer.OnCompletionListener, SeekBar
+        .OnSeekBarChangeListener {
     private static final String TAG = "VideoPlayActivity";
     private LearnInfoBean.DataBean.ContentBean mLearnInfo;
     private String mPlayType = "";
@@ -118,15 +119,15 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals("cmd_action")) {
                 int control = intent.getIntExtra("cmd_action", 0);
-                if (control == CMD_PAUSE){
+                if (control == CMD_PAUSE) {
                     pauseVideo();
-                }else if(control == CMD_REPLAY){
+                } else if (control == CMD_REPLAY) {
                     rePlayVideo();
-                }else if(control == CMD_NEXT){
+                } else if (control == CMD_NEXT) {
                     playNext();
-                }else if(control == CMD_PRE){
+                } else if (control == CMD_PRE) {
                     playPre();
-                }else if(control == CMD_EXIT){
+                } else if (control == CMD_EXIT) {
                     pauseVideo();
                     VideoPlayActivity.this.finish();
                 }
@@ -294,7 +295,8 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
         if (mPreParams == null) {
             mPreParams = (RelativeLayout.LayoutParams) mVideoLayout.getLayoutParams();
         }
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams
+                .MATCH_PARENT);
         mVideoLayout.setLayoutParams(params);
         mVideoList.setVisibility(View.INVISIBLE);
         mTvComplete.setVisibility(View.INVISIBLE);
@@ -508,7 +510,15 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
                 public void onClick(View view) {
                     if (mIsFinishFirstVideo) {
                         currentPosition = position;
-                        playVideo();
+                        if (position == getItemCount()-1){
+                            pauseVideo();
+                            Intent intent = new Intent(VideoPlayActivity.this,GameActivity.class);
+                            intent.putExtra("game_list",mLearnDetail);
+                            startActivity(intent);
+                        }else {
+                            playVideo();
+                        }
+
                     } else {
                         Toast.makeText(VideoPlayActivity.this, "请先观看完第一个视频", Toast.LENGTH_SHORT).show();
                     }
@@ -516,21 +526,38 @@ public class VideoPlayActivity extends BaseActivity implements SurfaceHolder.Cal
             });
             if (position == 0) {
                 ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_sp_click));
-            } else {
+            }else {
                 if (mIsFinishFirstVideo) {
                     ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_sp_click));
                 } else {
                     ((GalleryHolder) holder).mIvBg.setBackground(getResources().getDrawable(R.drawable.kt_sp));
                 }
             }
+<<<<<<< .mine
+            if (position == getItemCount()-1) {
+                ((GalleryHolder) holder).mTitle.setText("game");
+            }else {
+                ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().getLearnInfos().get(position).getWord());
+                Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().getLearnInfos().get(position).getImagePath()).into(((GalleryHolder) holder).image);
+            }
+||||||| .r187
             ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().getLearnInfos().get(position).getWord());
             Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().getLearnInfos().get(position).getImagePath()).into(((GalleryHolder) holder).image);
+=======
+            ((GalleryHolder) holder).mTitle.setText(mLearnDetail.getData().getLearnInfos().get(position).getWord());
+            Glide.with(VideoPlayActivity.this).load(mLearnDetail.getData().getLearnInfos().get(position).getImagePath()).into(((GalleryHolder)
+                    holder).image);
+>>>>>>> .r194
         }
 
         @Override
         public int getItemCount() {
             if (mLearnDetail != null && mLearnDetail.getData() != null) {
-                return mLearnDetail.getData().getLearnInfos().size();
+                if (mLearnDetail.getData().getGameLists().size()>0) {
+                    return mLearnDetail.getData().getLearnInfos().size()+1;
+                }else {
+                    return mLearnDetail.getData().getLearnInfos().size();
+                }
             } else {
                 return 0;
             }

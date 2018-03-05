@@ -11,7 +11,8 @@ public class VIdeoTypeBean {
 
     /**
      * message : 成功
-     * data : [{"typeId":8,"typeParent":1,"typeName":"story","typeDesc":"故事"},{"typeId":9,"typeParent":1,"typeName":"music","typeDesc":"歌曲"},{"typeId":10,"typeParent":1,"typeName":"cartoon","typeDesc":"动画片"},{"typeId":11,"typeParent":1,"typeName":"movie","typeDesc":"电影"}]
+     * data : [{"typeId":8,"typeParent":1,"typeName":"story","typeDesc":"故事"},{"typeId":9,"typeParent":1,"typeName":"music","typeDesc":"歌曲"},
+     * {"typeId":10,"typeParent":1,"typeName":"cartoon","typeDesc":"动画片"},{"typeId":11,"typeParent":1,"typeName":"movie","typeDesc":"电影"}]
      */
 
     private String message;
